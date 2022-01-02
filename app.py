@@ -41,6 +41,15 @@ def upload():
 
 @app.route('/classifier', methods=['GET', 'POST'])
 def classifier():
+    if request.method == 'POST':
+        clf_selected = request.form['clf_choice']
+        df = pd.read_csv('cleaned/processed.csv')
+        clf = Classifier(df, clf_selected)
+        study = clf.classify()
+        best_parameters = study.best_params
+
+        return render_template('result.html', best_parameters=best_parameters)
+
     return render_template('classifier.html')
 
 @app.route('/regressor', methods=['GET', 'POST'])
