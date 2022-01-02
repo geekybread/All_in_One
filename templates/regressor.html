@@ -1,0 +1,14 @@
+
+{% block head %}
+<title>Choice</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+{%endblock %}
+
+
+{% block body %}
+<div class="header">
+    <h1 style="text-align: center">Choose your problem statement</h1>
+        <p style="text-align: center; font-size: 20px"><a href="{{ url_for('upload') }}">Upload</a></p>
+        
+</div>
+{%endblock%}

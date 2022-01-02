@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>CSV FILE UPLOADING</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <form action="/upload" method="POST" enctype="multipart/form-data">
+            <label class='labelClass' for="myFile">Upload your CSV file </label>
+            <input style="margin-top:50px; margin-left:115px" type="file" id='myFile' name='file'/>
+            <br>
+
+            <label class='labelClass' for="choice"> Choose your problem statement</label>
+
+            <select class='textBox' style="margin-left:45px" name="choice" id="choice">
+                <option value="Regression">Regression</option>
+                <option value="Classification">Classification</option>
+            </select>
+            <br>
+            <label class='labelClass' for="cleaned">Do you want to preprocess your file?</label>
+            <select class='textBox' style="margin-left:13px" name="cleaned" id="cleaned">
+                <option value='Yes'>Yes </option>
+                <option value="No">No </option>
+            </select>
+            <br>
+            <input class='textBox' style="margin-left:275px" type="submit" value="Submit" >
+            
+    </form> 
+</body>
+</html>
