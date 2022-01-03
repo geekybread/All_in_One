@@ -58,8 +58,8 @@ def Cleaner(df):
     num_features = X.select_dtypes(include='number').columns
     cat_features = X.select_dtypes(include='object').columns
 
-    encd= encoder()
-    X2 = encd.fit_transform(cat_col)
+    #encd= encoder()
+    #X2 = encd.fit_transform(cat_col)
     #print(X2)
 
     num_pipeline = Pipeline([
@@ -67,7 +67,7 @@ def Cleaner(df):
     ('std_scaler', StandardScaler())
     ])
 
-    num_transformed = num_pipeline.fit_transform(num_col)
+    #num_transformed = num_pipeline.fit_transform(num_col)
     #print(num_transformed)
 
     cat_pipeline = Pipeline([
@@ -76,7 +76,7 @@ def Cleaner(df):
 
     ])
 
-    cat_transformed = cat_pipeline.fit_transform(cat_col)
+    #cat_transformed = cat_pipeline.fit_transform(cat_col)
     #print (cat_transformed)
 
     from sklearn.compose import ColumnTransformer
