@@ -1,7 +1,8 @@
 from flask import Flask, request, render_template,jsonify
 import pandas as pd
 import os
-from classifier import Classifier, objective
+from classifier import Classifier
+from regressor import Regressor
 from cleaner import Cleaner
 
 basedir = os.getcwd()
@@ -28,7 +29,7 @@ def upload():
         data = pd.read_csv(file_path)
         if clean == 'Yes':
             cleaned_data = Cleaner(data)
-            cleaned_data.to_csv('cleaned/processed.csv')
+            cleaned_data.to_csv('cleaned/processed.csv', index=False)
 
         choice = request.form['choice']
         if choice == 'Regression':
@@ -47,13 +48,23 @@ def classifier():
         clf = Classifier(df, clf_selected)
         study = clf.classify()
         best_parameters = study.best_params
+        best_value = study.best_trial.value
 
-        return render_template('result.html', best_parameters=best_parameters)
+        return render_template('result.html', best_parameters=best_parameters, best_value=best_value)
 
     return render_template('classifier.html')
 
 @app.route('/regressor', methods=['GET', 'POST'])
 def regressor():
+    if request.method == 'POST':
+        reg_selected = request.form['reg_choice']
+        df = pd.read_csv('cleaned/processed.csv')
+        reg = Regressor(df, reg_selected)
+        study = reg.regress()
+        best_parameters = study.best_params
+        best_value = study.best_trial.value
+
+        return render_template('result.html', best_parameters=best_parameters, best_value=best_value)
     return render_template('regressor.html')
 
 if __name__ == '__main__':

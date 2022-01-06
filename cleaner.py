@@ -18,17 +18,19 @@ class encoder(BaseEstimator, TransformerMixin):
     def transform(self, X):
         transformed = X.copy()
         for i in X.columns:
-            if X[i].nunique()>5:
-                enc = LabelEncoder()
-                transformed[i] = enc.fit_transform(X[i])
-            
+            if X[i].nunique()<len(X[i])/5:
+                if X[i].nunique()>5:
+                    enc = LabelEncoder()
+                    transformed[i] = enc.fit_transform(X[i])
+                
+                else:
+                    enc = OneHotEncoder()
+                    transformed[i] = enc.fit_transform(X[[i]])
+                    temp_X = pd.DataFrame(OneHotEncoder(drop='first', handle_unknown='ignore').fit_transform(X[[i]]).toarray())
+                    transformed = pd.concat([transformed, temp_X], axis=1)
+                    transformed.drop([i], axis=1, inplace=True)
             else:
-                enc = OneHotEncoder()
-                transformed[i] = enc.fit_transform(X[[i]])
-                temp_X = pd.DataFrame(OneHotEncoder(drop='first', handle_unknown='ignore').fit_transform(X[[i]]).toarray())
-                transformed = pd.concat([transformed, temp_X], axis=1)
                 transformed.drop([i], axis=1, inplace=True)
-
         return transformed
 
 
@@ -88,6 +90,8 @@ def Cleaner(df):
     processed_X = pd.DataFrame(data_pipeline.fit_transform(X))
     
     data = pd.concat([processed_X, y], axis=1)
+
+    data.dropna(axis=0, how='any', inplace=True)
 
     return data
 

@@ -6,9 +6,22 @@
 
 
 {% block body %}
-<div class="header">
-    <h1 style="text-align: center">Choose your problem statement</h1>
-        <p style="text-align: center; font-size: 20px"><a href="{{ url_for('upload') }}">Upload</a></p>
-        
-</div>
+<body>
+    <form action="/regressor" method="POST" enctype="multipart/form-data">
+
+            <label class='labelClass' for="reg_choice">Which regressor model would you like to use</label>
+
+            <select class='textBox' style="margin-left:45px" name="reg_choice" id="reg_choice">
+                <option value="all">Try All</option>
+                <option value="SVR">SVR</option>
+                <option value="rf">Random Forest</option>
+                <option value="knn">KNN</option>
+                <option value="tree">Decision Tree</option>
+                <option value="linear">Linear Regression</option>
+            </select>
+            <br>
+            <input class='textBox' style="margin-left:275px" type="submit" value="Submit" >
+            
+    </form> 
+</body>
 {%endblock%}
