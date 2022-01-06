@@ -1,1 +1,1 @@
-# All_in_One
+# Basic automated ML pipeline
