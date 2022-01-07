@@ -15,7 +15,7 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 @app.route('/', methods=['GET', 'POST'])
 def index():
     for f in os.listdir(UPLOAD_FOLDER):
-            os.remove(os.path.join(UPLOAD_FOLDER, f))
+            os.remove(os.path.join(app.config['UPLOAD_FOLDER'], f))
     return render_template('index.html')
 
 @app.route('/upload', methods=['GET', 'POST'])
