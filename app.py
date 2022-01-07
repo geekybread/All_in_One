@@ -1,7 +1,7 @@
 from flask import Flask, request, render_template,send_file
 import pandas as pd
 import os
-import shutil
+import glob
 from classifier import Classifier
 from regressor import Regressor
 from cleaner import Cleaner
@@ -15,22 +15,10 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
-    for files in os.listdir(UPLOAD_FOLDER):
-        path = os.path.join(UPLOAD_FOLDER, files)
-        try:
-            shutil.rmtree(path)
-        except OSError:
-            os.remove(path)
     return render_template('index.html')
 
 @app.route('/upload', methods=['GET', 'POST'])
 def upload():
-    for files in os.listdir(UPLOAD_FOLDER):
-        path = os.path.join(UPLOAD_FOLDER, files)
-        try:
-            shutil.rmtree(path)
-        except OSError:
-            os.remove(path)
     if request.method == 'POST':
         uploaded_file = request.files['file']
         if uploaded_file.filename != '':
