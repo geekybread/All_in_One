@@ -1,4 +1,4 @@
-from flask import Flask, request, render_template,jsonify
+from flask import Flask, request, render_template,send_file
 import pandas as pd
 import os
 from classifier import Classifier
@@ -14,10 +14,14 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
+    for f in os.listdir(UPLOAD_FOLDER):
+            os.remove(os.path.join(UPLOAD_FOLDER, f))
     return render_template('index.html')
 
 @app.route('/upload', methods=['GET', 'POST'])
 def upload():
+    for f in os.listdir(UPLOAD_FOLDER):
+            os.remove(os.path.join(UPLOAD_FOLDER, f))
     if request.method == 'POST':
         uploaded_file = request.files['file']
         if uploaded_file.filename != '':
@@ -46,11 +50,12 @@ def classifier():
         clf_selected = request.form['clf_choice']
         df = pd.read_csv('cleaned/processed.csv')
         clf = Classifier(df, clf_selected)
-        study = clf.classify()
+        global best_model
+        study, best_model = clf.classify()
         best_parameters = study.best_params
         best_value = study.best_trial.value
 
-        return render_template('result.html', best_parameters=best_parameters, best_value=best_value)
+        return render_template('result.html', best_parameters=best_parameters, best_value=best_value, best_model=best_model)
 
     return render_template('classifier.html')
 
@@ -60,12 +65,18 @@ def regressor():
         reg_selected = request.form['reg_choice']
         df = pd.read_csv('cleaned/processed.csv')
         reg = Regressor(df, reg_selected)
-        study = reg.regress()
+        global best_model
+        study,best_model = reg.regress()
         best_parameters = study.best_params
         best_value = study.best_trial.value
 
         return render_template('result.html', best_parameters=best_parameters, best_value=best_value)
     return render_template('regressor.html')
+
+
+@app.route('/downloads', methods=['GET','POST'])
+def download():
+    return send_file(best_model, attachment_filename='model.pickle')
 
 if __name__ == '__main__':
     app.run(debug=True)

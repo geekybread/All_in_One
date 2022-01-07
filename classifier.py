@@ -1,4 +1,4 @@
-
+import pickle
 import optuna
 import pandas as pd
 import sklearn.datasets
@@ -55,7 +55,10 @@ class objective(object):
 
         score = sklearn.model_selection.cross_val_score(self.classifier_obj, self.X, self.y, n_jobs=-1, cv=3)
         accuracy = score.mean()
-        return accuracy
+        with open("uploads/{}.pickle".format(trial.number), "wb") as fout:
+            pickle.dump(self.classifier_obj, fout)
+            return accuracy
+
 
 class Classifier():
 
@@ -68,4 +71,5 @@ class Classifier():
     def classify(self):
         study = optuna.create_study(direction="maximize")
         study.optimize(objective(self.df, self.classifier_name), n_trials=100)
-        return study
+        best_clf = "uploads/{}.pickle".format(study.best_trial.number)
+        return study, best_clf

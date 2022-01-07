@@ -10,5 +10,11 @@
    <div class="header">Result</div>
      <p style="margin-left:20px; font-size: 20px;">Best parameters for your use case are : {{best_parameters}}</p> 
      <p style="margin-left:20px; font-size: 20px;">Accuracy: {{best_value}}</p> 
+     
+     <a href="{{ url_for('download') }}" target="blank" ><button style= "cursor: pointer">Download best model</button></a>
+
+     <a href="{{ url_for('upload') }}" target="blank" ><button style= "cursor: pointer">Try another file</button></a>
+
+     <a href="{{ url_for('upload') }}" target="blank" ><button style= "cursor: pointer">Back to Home</button></a>
 </body>
 </html>
