@@ -14,14 +14,14 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
-    for f in os.listdir(UPLOAD_FOLDER):
+    for f in os.listdir(app.config['UPLOAD_FOLDER']):
             os.remove(os.path.join(app.config['UPLOAD_FOLDER'], f))
     return render_template('index.html')
 
 @app.route('/upload', methods=['GET', 'POST'])
 def upload():
-    for f in os.listdir(UPLOAD_FOLDER):
-            os.remove(os.path.join(UPLOAD_FOLDER, f))
+    for f in os.listdir(app.config['UPLOAD_FOLDER']):
+            os.remove(os.path.join(app.config['UPLOAD_FOLDER'], f))
     if request.method == 'POST':
         uploaded_file = request.files['file']
         if uploaded_file.filename != '':
