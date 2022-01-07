@@ -24,7 +24,7 @@ class objective(object):
         if self.i:
             self.regressor_name = trial.suggest_categorical("regressor", ["SVR", "rf","knn",'tree','linear'])
         if self.regressor_name == "SVR":
-            kernel = trial.suggest_categorical("kernel",['linear', 'poly', 'rbf', 'sigmoid', 'precomputed']) 
+            kernel = trial.suggest_categorical("kernel",['linear', 'poly', 'rbf', 'sigmoid']) 
             degree = trial.suggest_int('degree',3,10, log=True)
             self.regressor_obj = sklearn.svm.SVR(
                 kernel=kernel, 
