@@ -5,8 +5,8 @@ from classifier import Classifier
 from regressor import Regressor
 from cleaner import Cleaner
 
-basedir = os.getcwd()
-print(basedir)
+basedir = os.path.abspath(os.path.dirname(__file__))
+
 UPLOAD_FOLDER = os.path.join(basedir,'uploads/')
 
 app = Flask(__name__)
