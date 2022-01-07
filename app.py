@@ -1,27 +1,36 @@
 from flask import Flask, request, render_template,send_file
 import pandas as pd
 import os
+import shutil
 from classifier import Classifier
 from regressor import Regressor
 from cleaner import Cleaner
 
-#basedir = os.path.abspath(os.path.dirname(__file__))
+basedir = os.path.abspath(os.path.dirname(__file__))
 
-UPLOAD_FOLDER = "./uploads"
+UPLOAD_FOLDER = os.path.join(basedir,"uploads")
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
-    for f in os.listdir(app.config['UPLOAD_FOLDER']):
-            os.remove(os.path.join(app.config['UPLOAD_FOLDER'], f))
+    for files in os.listdir(UPLOAD_FOLDER):
+        path = os.path.join(UPLOAD_FOLDER, files)
+        try:
+            shutil.rmtree(path)
+        except OSError:
+            os.remove(path)
     return render_template('index.html')
 
 @app.route('/upload', methods=['GET', 'POST'])
 def upload():
-    for f in os.listdir(app.config['UPLOAD_FOLDER']):
-            os.remove(os.path.join(app.config['UPLOAD_FOLDER'], f))
+    for files in os.listdir(UPLOAD_FOLDER):
+        path = os.path.join(UPLOAD_FOLDER, files)
+        try:
+            shutil.rmtree(path)
+        except OSError:
+            os.remove(path)
     if request.method == 'POST':
         uploaded_file = request.files['file']
         if uploaded_file.filename != '':
