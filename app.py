@@ -5,7 +5,7 @@ from classifier import Classifier
 from regressor import Regressor
 from cleaner import Cleaner
 
-basedir = os.path.abspath(os.path.dirname(__file__))
+basedir = os.path.dirname(os.path.realpath(__file__))
 
 UPLOAD_FOLDER = os.path.join(basedir,'uploads/')
 
