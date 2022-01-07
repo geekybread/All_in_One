@@ -21,11 +21,13 @@ def index():
 def upload():
     if request.method == 'POST':
         uploaded_file = request.files['file']
+        
         if uploaded_file.filename != '':
             global file_path
             file_path = os.path.join(app.config['UPLOAD_FOLDER'], uploaded_file.filename)
             uploaded_file.save(file_path)
-    
+        if request.files['file'].filename == '':
+            return render_template('upload.html')
         clean = request.form['cleaned']
         data = pd.read_csv(file_path)
         if clean == 'Yes':
