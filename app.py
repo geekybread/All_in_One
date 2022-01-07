@@ -5,9 +5,9 @@ from classifier import Classifier
 from regressor import Regressor
 from cleaner import Cleaner
 
-basedir = os.path.dirname(os.path.realpath(__file__))
+basedir = os.path.abspath(os.path.dirname(__file__))
 
-UPLOAD_FOLDER = os.path.join(basedir,'uploads/')
+UPLOAD_FOLDER = os.path.join(basedir, os.path.abspath('uploads'))
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
