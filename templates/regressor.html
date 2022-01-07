@@ -1,7 +1,12 @@
 
 {% block head %}
-<title>Choice</title>
-<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <title>Regressor Page</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/assets/css/main.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/style.css') }}" />
+    <noscript><link rel="stylesheet" href="{{ url_for('static',filename='css/assets/css/noscript.css')}}" /></noscript>
+
 {%endblock %}
 
 
@@ -9,9 +14,9 @@
 <body>
     <form action="/regressor" method="POST" enctype="multipart/form-data">
 
-            <label class='labelClass' for="reg_choice">Which regressor model would you like to use</label>
+            <label class='labelClass' for="reg_choice" style='display:inline;'>Which regressor model would you like to use</label>
 
-            <select class='textBox' style="margin-left:45px" name="reg_choice" id="reg_choice">
+            <select class='textBox' style="margin-left:45px; display: inline;" name="reg_choice" id="reg_choice">
                 <option value="all">Try All</option>
                 <option value="SVR">SVR</option>
                 <option value="rf">Random Forest</option>

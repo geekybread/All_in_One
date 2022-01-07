@@ -1,7 +1,10 @@
-
 {% block head %}
-<title>Choice</title>
-<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+		<title>Classifier Page</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="{{ url_for('static',filename='css/assets/css/main.css') }}" />
+        <link rel="stylesheet" href="{{ url_for('static',filename='css/style.css') }}" />
+		<noscript><link rel="stylesheet" href="{{ url_for('static',filename='css/assets/css/noscript.css')}}" /></noscript>
 {%endblock %}
 
 
@@ -9,9 +12,9 @@
 <body>
     <form action="/classifier" method="POST" enctype="multipart/form-data">
 
-            <label class='labelClass' for="clf_choice">Which classifier model would you like to use</label>
+            <label class='labelClass' for="clf_choice" style="display: inline; margin-top: 30px;">Which classifier model would you like to use</label>
 
-            <select class='textBox' style="margin-left:45px" name="clf_choice" id="clf_choice">
+            <select class='textBox' style="margin-left:45px; display: inline;" name="clf_choice" id="clf_choice">
                 <option value="all">Try All</option>
                 <option value="SVC">SVC</option>
                 <option value="rf">Random Forest</option>
