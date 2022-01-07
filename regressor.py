@@ -34,7 +34,7 @@ class objective(object):
             rf_max_depth = trial.suggest_int("rf_max_depth", 2, 32, log=True)
             criterion = trial.suggest_categorical('criterion',['squared_error', 'absolute_error', 'poisson'])
             n_estimators = trial.suggest_int('n_estimators',10,50)
-            max_features = trial.suggest_categorical('max_features',['auto', 'sqrt', 'log2'])
+            max_features = trial.suggest_categorical('max_feature',['auto', 'sqrt', 'log2'])
 
             self.regressor_obj = RandomForestRegressor(
                 max_depth=rf_max_depth,
@@ -53,7 +53,7 @@ class objective(object):
             )
         elif self.regressor_name=='tree':
             max_depth = trial.suggest_int('max_depth',10,20,log=True)
-            criterion = trial.suggest_categorical('criterion',['squared_error', 'friedman_mse', 'absolute_error', 'poisson'])
+            criterion = trial.suggest_categorical('criteria',['squared_error', 'friedman_mse', 'absolute_error', 'poisson'])
             splitter = trial.suggest_categorical('splitter',['best', 'random'])
             max_features = trial.suggest_categorical('max_features',['auto', 'sqrt', 'log2'])
 

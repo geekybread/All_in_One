@@ -30,6 +30,7 @@ def upload():
             return render_template('upload.html')
         clean = request.form['cleaned']
         data = pd.read_csv(file_path)
+        os.remove(file_path)
         if clean == 'Yes':
             cleaned_data = Cleaner(data)
             cleaned_data.to_csv('cleaned/processed.csv', index=False)
