@@ -10,7 +10,6 @@ from sklearn.neighbors import KNeighborsRegressor
 from sklearn.tree import DecisionTreeRegressor
 from sklearn.linear_model import LinearRegression
 from sklearn.ensemble import RandomForestRegressor
-from sklearn.metrics import accuracy_score
 class objective(object):
     def __init__(self, df, regressor_name):
         self.df = df
@@ -24,12 +23,11 @@ class objective(object):
         if self.i:
             self.regressor_name = trial.suggest_categorical("regressor", ["SVR", "rf","knn",'tree','linear'])
         if self.regressor_name == "SVR":
-            kernel = trial.suggest_categorical("kernel",['linear', 'poly', 'rbf', 'sigmoid']) 
-            degree = trial.suggest_int('degree',0,5)
+            kernel = trial.suggest_categorical("kernel",['linear', 'poly', 'sigmoid']) 
+            degree = trial.suggest_int('degree',0,4)
             self.regressor_obj = sklearn.svm.SVR(
                 kernel=kernel, 
-                degree=degree,
-                gamma="auto")
+                degree=degree)
         elif self.regressor_name=='rf':
             rf_max_depth = trial.suggest_int("rf_max_depth", 2, 32, log=True)
             criterion = trial.suggest_categorical('criterion',['squared_error', 'absolute_error', 'poisson'])
@@ -89,6 +87,6 @@ class Regressor():
 
     def regress(self):
         study = optuna.create_study(direction="maximize")
-        study.optimize(objective(self.df, self.regressor_name), n_trials=50)
+        study.optimize(objective(self.df, self.regressor_name), n_trials=20)
         best_reg = "uploads/{}.pickle".format(study.best_trial.number)
         return study, best_reg
