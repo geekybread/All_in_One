@@ -52,10 +52,11 @@ def upload():
 @app.route('/classifier', methods=['GET', 'POST'])
 def classifier():
     if request.method == 'POST':
+        c = 'clf'
         model = request.form['clf_choice']
         global best_model
         df = pd.read_csv('cleaned/processed.csv')
-        study, best_model =  q.enqueue(processor, df, model)
+        study, best_model =  q.enqueue(processor, df=df, c=c, model=model)
         best_parameters = study.best_params
         best_value = round(study.best_trial.value,4)*100
 
@@ -67,9 +68,10 @@ def classifier():
 def regressor():
     if request.method == 'POST':
         model = request.form['reg_choice']
+        c = 'reg'
         df = pd.read_csv('cleaned/processed.csv')
         global best_model
-        study, best_model =  q.enqueue(processor, df, model)
+        study, best_model =  q.enqueue(processor, df,c, model)
         best_parameters = study.best_params
         best_value = round(study.best_trial.value,2)*100
 
