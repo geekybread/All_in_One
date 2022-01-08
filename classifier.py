@@ -24,31 +24,47 @@ class objective(object):
         if self.i:
             self.classifier_name = trial.suggest_categorical("classifier", ["SVC", "rf","knn",'tree','logistic'])
         if self.classifier_name == "SVC":
-            svc_c = trial.suggest_float("svc_c", 1e-10, 1e10, log=True)
+            svc_c = trial.suggest_float("svc_c", 1e-3, 1000, log=True)
             self.classifier_obj = sklearn.svm.SVC(C=svc_c, gamma="auto")
         elif self.classifier_name=='rf':
             rf_max_depth = trial.suggest_int("rf_max_depth", 2, 32, log=True)
+            criteria = trial.suggest_categorical('criteria',['gini', 'entropy'])
+            min_samples_split = trial.suggest_int("min_samples", 2, 20)
+            n_estimators = trial.suggest_int('n_estimators',10,50)
+            max_features = trial.suggest_categorical('max_feature',['auto', 'sqrt', 'log2'])
             self.classifier_obj = RandomForestClassifier(
-                max_depth=rf_max_depth, n_estimators=10
+                max_depth=rf_max_depth,
+                n_estimators=n_estimators,
+                criterion=criteria,
+                max_features=max_features,
+                min_samples_split=min_samples_split
             )
         elif self.classifier_name=='knn':
             n_neighbors = trial.suggest_int('n_neighbours',5,7,log=True)
             weights = trial.suggest_categorical('weights',['uniform','distance'])
+            algorithm= trial.suggest_categorical('algorithm',['auto', 'ball_tree', 'kd_tree', 'brute'])
             self.classifier_obj = KNeighborsClassifier(
                 n_neighbors = n_neighbors,
-                weights = weights
+                weights = weights,
+                algorithm=algorithm
             )
         elif self.classifier_name=='tree':
             max_depth = trial.suggest_int('max_depth',10,20,log=True)
             criterion = trial.suggest_categorical('criterion',['gini', 'entropy'])
+            splitter = trial.suggest_categorical('splitter',['best', 'random'])
+            max_feature = trial.suggest_categorical('max_feature',['auto', 'sqrt', 'log2'])
+            min_samples_split = trial.suggest_int("min_samples", 2, 20)
+
             self.classifier_obj = DecisionTreeClassifier(
                 criterion=criterion,
                 max_depth=max_depth,
-                random_state=42
+                max_features=max_feature,
+                splitter=splitter,
+                min_samples_split=min_samples_split
             )
 
         elif self.classifier_name=='logistic':
-            C = trial.suggest_int('c',1,100,log=True)
+            C = trial.suggest_int('c',0.001,1000)
             self.classifier_obj = LogisticRegression(
             C=C, random_state=42)
 

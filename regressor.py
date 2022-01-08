@@ -10,7 +10,7 @@ from sklearn.neighbors import KNeighborsRegressor
 from sklearn.tree import DecisionTreeRegressor
 from sklearn.linear_model import LinearRegression
 from sklearn.ensemble import RandomForestRegressor
-
+from sklearn.metrics import accuracy_score
 class objective(object):
     def __init__(self, df, regressor_name):
         self.df = df
@@ -25,7 +25,7 @@ class objective(object):
             self.regressor_name = trial.suggest_categorical("regressor", ["SVR", "rf","knn",'tree','linear'])
         if self.regressor_name == "SVR":
             kernel = trial.suggest_categorical("kernel",['linear', 'poly', 'rbf', 'sigmoid']) 
-            degree = trial.suggest_int('degree',3,10, log=True)
+            degree = trial.suggest_int('degree',0,5)
             self.regressor_obj = sklearn.svm.SVR(
                 kernel=kernel, 
                 degree=degree,
@@ -35,12 +35,14 @@ class objective(object):
             criterion = trial.suggest_categorical('criterion',['squared_error', 'absolute_error', 'poisson'])
             n_estimators = trial.suggest_int('n_estimators',10,50)
             max_features = trial.suggest_categorical('max_feature',['auto', 'sqrt', 'log2'])
+            min_samples_split = trial.suggest_int("min_samples", 2, 20)
 
             self.regressor_obj = RandomForestRegressor(
                 max_depth=rf_max_depth,
                 criterion=criterion,
                 n_estimators=n_estimators,
-                max_features=max_features
+                max_features=max_features,
+                min_samples_split=min_samples_split
             )
         elif self.regressor_name=='knn':
             n_neighbors = trial.suggest_int('n_neighbours',5,7,log=True)
@@ -56,13 +58,14 @@ class objective(object):
             criterion = trial.suggest_categorical('criteria',['squared_error', 'friedman_mse', 'absolute_error', 'poisson'])
             splitter = trial.suggest_categorical('splitter',['best', 'random'])
             max_features = trial.suggest_categorical('max_features',['auto', 'sqrt', 'log2'])
+            min_samples_split = trial.suggest_int("min_samples", 2, 20)
 
             self.regressor_obj = DecisionTreeRegressor(
                 criterion=criterion,
                 max_depth=max_depth,
                 splitter=splitter,
                 max_features=max_features,
-                random_state=42
+                min_samples_split=min_samples_split
             )
 
         elif self.regressor_name=='linear':
