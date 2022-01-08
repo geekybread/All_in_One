@@ -70,6 +70,6 @@ class Classifier():
 
     def classify(self):
         study = optuna.create_study(direction="maximize")
-        study.optimize(objective(self.df, self.classifier_name), n_trials=100)
+        study.optimize(objective(self.df, self.classifier_name), n_trials=50)
         best_clf = "uploads/{}.pickle".format(study.best_trial.number)
         return study, best_clf
