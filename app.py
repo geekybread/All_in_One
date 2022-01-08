@@ -1,15 +1,9 @@
 from flask import Flask, request, render_template,send_file
 import pandas as pd
 import os
-from utils import processor
-# from classifier import Classifier
-# from regressor import Regressor
+from classifier import Classifier
+from regressor import Regressor
 from cleaner import Cleaner
-
-from rq import Queue
-from worker import conn
-
-q = Queue(connection=conn)
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 
@@ -52,11 +46,11 @@ def upload():
 @app.route('/classifier', methods=['GET', 'POST'])
 def classifier():
     if request.method == 'POST':
-        c = 'clf'
-        model = request.form['clf_choice']
-        global best_model
+        clf_selected = request.form['clf_choice']
         df = pd.read_csv('cleaned/processed.csv')
-        study, best_model =  q.enqueue(processor, df=df, c=c, model=model)
+        clf = Classifier(df, clf_selected)
+        global best_model
+        study, best_model = clf.classify()
         best_parameters = study.best_params
         best_value = round(study.best_trial.value,4)*100
 
@@ -67,13 +61,13 @@ def classifier():
 @app.route('/regressor', methods=['GET', 'POST'])
 def regressor():
     if request.method == 'POST':
-        model = request.form['reg_choice']
-        c = 'reg'
+        reg_selected = request.form['reg_choice']
         df = pd.read_csv('cleaned/processed.csv')
+        reg = Regressor(df, reg_selected)
         global best_model
-        study, best_model =  q.enqueue(processor, df,c, model)
+        study,best_model = reg.regress()
         best_parameters = study.best_params
-        best_value = round(study.best_trial.value,2)*100
+        best_value = round(study.best_trial.value,4)*100
 
         return render_template('result.html', best_parameters=best_parameters, best_value=best_value)
     return render_template('regressor.html')

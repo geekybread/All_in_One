@@ -1,2 +1,1 @@
-web: gunicorn app:app --preload
-worker: python worker.py
+web: gunicorn app:app --preload  --timeout 100
